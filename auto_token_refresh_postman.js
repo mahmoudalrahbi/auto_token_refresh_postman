@@ -2,16 +2,19 @@
 
 const moment = require('moment')
 
-//constent to store the names of env variables
+//constent to store the names of environment variables
 const ACCESS_TOKEN_KEY = "OAuth_Token";//
 const EXPIRY_ACCESS_TOKEN_KEY = "AccessTokenExpiry";
+
+//collection varables
 const AUTH_URL_KEY = "Auth_Url";//the url where you can get the token
 const CLIENT_ID_KEY = "client_id";
 const CLIENT_SECRET_KEY = "client_secret";
 
 
 
-//check if we have valid token and not expiry else don't do enything
+//check if we have valid token and not expiry
+//if token is valid don't do enything else request new token
 if (!_.has(pm.environment.toObject(), EXPIRY_ACCESS_TOKEN_KEY)
     || !_.has(pm.environment.toObject(), ACCESS_TOKEN_KEY)
     || pm.environment.get(EXPIRY_ACCESS_TOKEN_KEY) <= moment().valueOf()) {
@@ -42,7 +45,7 @@ if (!_.has(pm.environment.toObject(), EXPIRY_ACCESS_TOKEN_KEY)
         }
     }
 
-
+    //send the request
     pm.sendRequest(getNewToken, (err, res) => {
         if (err === null) {
             try {
